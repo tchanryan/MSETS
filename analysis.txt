@@ -1,0 +1,139 @@
+
+========================================================================
+                          Complexity Analysis
+========================================================================
+
+NOTE:
+- Your time complexities should be in big-O notation.
+- For MsetUnion, MsetIntersection, MsetIncluded and MsetEquals, your
+  time complexities should be in terms of n and m, where n is the size
+  of the first multiset (s1) and m is the size of the second multiset
+  (s2).
+- For MsetMostCommon, your time complexity should be in terms of n and k,
+  where n is the number of distinct elements in the given multiset and k
+  is the given value of k.
+
+////////////// WORST CASE TIME COMPLEXITY = WTC ///////////////////
+
+------------------
+    MsetUnion
+------------------
+
+Worst case time complexity: 
+AVL: O(n*log(n) + m*log(m))
+BST: O(n^2 + m^2)
+
+Explanation: 
+The MsetInsertFromTree function is WTC O(n) for each instance that it is 
+called as it recursively goes through the AVL tree to transfer the node 
+to the result set. Within the function, it also calls upon MsetGetCountHelper
+which is WTC O(log(n)) for the AVL tree to lookup a node. Since it is nested,
+the overall function becomes WTC O(n*log(n)), but since it is called for both
+sets, it becomes O(n*log(n) + m*log(m)).
+
+Otherwise if it were a BST then, assuming we keep this in terms of n and m,
+WTC is O(n) for the MsetGetCountHelper function as we would traverse each
+node like it were a linked list (linear/unbalanced). Thus, overall WTC 
+becomes O(n^2 + m^2) as the function is nested in an O(n)/O(m) function which
+is called twice.
+
+------------------
+ MsetIntersection
+------------------
+
+Worst case time complexity: 
+AVL: O(n*log(m+n))
+BST: O(n*(m+n))
+
+Explanation: 
+The MsetInsertIfInSets functions is WTC O(n) as it recursively goes through
+set 1. Within this function, it continually checks its node against all 
+values held in set 2 in the MsetGetCount function. The WTC for this is O(log(m))
+for the AVL tree or O(m) for the unbalanced BST. This is the same for the 
+MsetGetCountHelper function but for set 1, meaning WTC is O(log(m) + log(n))
+for the AVL or O(m+n) for BST. Since this is nested in a function of O(n), 
+overall WTC becomes O(n*log(m+n)) for the AVL or O(n*(m+n)) for BST.
+
+
+------------------
+   MsetIncluded
+------------------
+
+Worst case time complexity: 
+AVL: O(n*log(m))
+BST: O(n*m)
+
+Explanation: 
+The MsetIncluded functions is WTC O(n) as it recursively goes through
+set 1. Within this function, it continually checks its node against all 
+values held in set 2 in the MsetGetCount function. The WTC for this is O(log(m))
+for the AVL tree or O(m) for the unbalanced BST. Since this is nested in a 
+function of O(n), overall WTC becomes O(n*log(m)) for the AVL or O(n*m) 
+for BST.
+
+
+------------------
+    MsetEquals
+------------------
+
+Worst case time complexity: 
+AVL: O(n*log(m) + m*log(n))
+BST: O(2*nm)
+
+Explanation: 
+The MsetCheckIncluded functions, called in MsetEquals, is WTC O(n) as it 
+recursively goes through set 1. Within this function, it continually checks 
+its node against all values held in set 2 in the MsetGetCount function. 
+The WTC for this is O(log(m)) for the AVL tree or O(m) for the unbalanced 
+BST. Since this is nested in a function of O(n), overall WTC becomes 
+O(n*log(m)) for the AVL or O(n*m) for BST.
+
+Since it is called twice to check if set 2 is also included in set 1, the
+reverse also needs to be considered. That is, MsetEquals is O(n*log(m)) / 
+O(n*m) for checking if set 1 is in set 2, and O(m*log(n)) / O(n*m) for 
+checking if set 2 is in set 1. Thus the cumulative total of these operations
+becomes the WTC of MsetEquals.
+
+
+------------------
+  MsetMostCommon
+------------------
+
+Worst case time complexity: O(n^2)
+
+Explanation: 
+In the MsetMostCommon function, we call upon two functions; one reads the 
+BST in-order and transfers elem + count to an array, and the other sorts
+the array based on count. 
+
+The bstInOrder function is WTC O(n) as, at most, the function will traverse
+up to the amount of nodes included in the set. 
+
+The sortArray function is WTC O(n^2) as it utilizes a double for-loop to 
+perform swaps based on frequency of an item. 
+
+Given that these are not nested, the time complexity is O(n^2 + n). 
+Additionally, there is another for-loop that runs up to 'k' times, with its
+worst case outcome being as large as the number of nodes 'n'. 
+
+Thus, the overall time complexity of MsetMostCommon is O(k + n + n^2), 
+however, considering WTC of the overall function, only O(n^2) is valid.
+
+
+
+========================================================================
+               Design Documentation for Cursor Operations
+========================================================================
+
+If you completed the cursor operations, you must explain the design and
+implementation of your solution here.
+
+
+
+
+
+
+
+
+
+
